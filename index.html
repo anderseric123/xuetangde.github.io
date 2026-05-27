@@ -1,0 +1,1291 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>金十期货学堂</title>
+    <link href="//cdn.jin10.com/assets/img/commons/favicon.ico" type="image/x-icon" rel="icon" />
+    <script src="https://cdn.jin10.com/plugins/jsBridge/index.js"></script>
+    <link href="./css/test-env-tag.css" rel="stylesheet" />
+    <script>
+      function stat(sites) {
+        const parsedSites = stat._parseSites(sites);
+        if (parsedSites.indexOf("1000171913") > -1) {
+          parsedSites.push("1253039837");
+        }
+        parsedSites.forEach((site) => {
+          const script = stat._createScript(site);
+          document.head.appendChild(script);
+        });
+      }
+
+      stat._parseSites = function (sites = []) {
+        sites = [].concat(sites);
+        if (stat.commonIncluded) {
+          sites.unshift("common");
+        }
+        const parse = (site) => stat.sites[site] || site;
+        const unique = (arr) => {
+          const newArr = [];
+          for (let i = 0; i < arr.length; i++) {
+            const item = arr[i];
+            if (newArr.indexOf(item) === -1) {
+              newArr.push(item);
+            }
+          }
+          return newArr;
+        };
+        return unique(sites.map(parse));
+      };
+
+      stat._createScript = function (id) {
+        const script = document.createElement("script");
+        const protocol = location.protocol;
+        const args = [];
+        args.push(`id=${id}`);
+        args.push(`web_id=${id}`);
+        args.push("async=1");
+        script.charset = "utf-8";
+        script.type = "text/javascript";
+        script.async = true;
+        script.src = `${protocol}//s96.cnzz.com/z_stat.php?${args.join("&")}`;
+        return script;
+      };
+
+      stat.commonIncluded = true;
+      stat.sites = {
+        common: "1000171913",
+        vip: "1255889801",
+        diary: "1262999091",
+        hero: "1262999091",
+        news: "1254618299",
+        video: "1253231394",
+        calendar: "1253656910",
+        datacenter: "1261933372"
+      };
+
+      let cnzzStatInitialized = false;
+
+      function initCnzzStat() {
+        if (cnzzStatInitialized) return;
+        cnzzStatInitialized = true;
+        try {
+          stat();
+        } catch (error) {
+          console.warn("cnzzStat 初始化失败", error);
+        }
+      }
+
+      function initTestEnvTag() {
+        const hostname = window.location.hostname;
+        if (!hostname.startsWith("frontend-test.jin10.com") && !["localhost", "127.0.0.1", "local.jin10.com"].includes(hostname)) {
+          return;
+        }
+        if (document.getElementById("test-env-tag")) return;
+
+        const tag = document.createElement("div");
+        tag.id = "test-env-tag";
+        tag.innerHTML = [
+          '<span class="mobile-text flex items-center justify-center">',
+          '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>',
+          "</span>",
+          '<span class="pc-text">测试环境</span>'
+        ].join("\n");
+        document.body.appendChild(tag);
+        tag.style.top = "70px";
+        tag.style.left = "10px";
+
+        let isDragging = false;
+        let isMoved = false;
+        let startX = 0;
+        let startY = 0;
+        let initialLeft = 0;
+        let initialTop = 0;
+        let clientWidth = document.documentElement.clientWidth;
+        let clientHeight = document.documentElement.clientHeight;
+
+        const snapToEdge = () => {
+          const rect = tag.getBoundingClientRect();
+          const tagX = rect.left + rect.width / 2;
+          tag.style.left = tagX < clientWidth / 2 ? "10px" : `${clientWidth - rect.width - 10}px`;
+          if (rect.top < 0) tag.style.top = "10px";
+          if (rect.bottom > clientHeight) tag.style.top = `${clientHeight - rect.height - 10}px`;
+        };
+
+        const onDragStart = (event) => {
+          isDragging = true;
+          isMoved = false;
+          tag.classList.add("dragging");
+          const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+          const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+          const rect = tag.getBoundingClientRect();
+          startX = clientX;
+          startY = clientY;
+          initialLeft = rect.left;
+          initialTop = rect.top;
+        };
+
+        const onDragMove = (event) => {
+          if (!isDragging) return;
+          event.preventDefault();
+          const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+          const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+          if (Math.abs(clientX - startX) > 5 || Math.abs(clientY - startY) > 5) {
+            isMoved = true;
+          }
+          tag.style.left = `${initialLeft + (clientX - startX)}px`;
+          tag.style.top = `${initialTop + (clientY - startY)}px`;
+        };
+
+        const onDragEnd = () => {
+          if (!isDragging) return;
+          isDragging = false;
+          tag.classList.remove("dragging");
+          snapToEdge();
+        };
+
+        tag.addEventListener("mousedown", onDragStart);
+        tag.addEventListener("touchstart", onDragStart, { passive: false });
+        document.addEventListener("mousemove", onDragMove);
+        document.addEventListener("touchmove", onDragMove, { passive: false });
+        document.addEventListener("mouseup", onDragEnd);
+        document.addEventListener("touchend", onDragEnd);
+        tag.addEventListener("click", (event) => {
+          if (isMoved) {
+            event.preventDefault();
+            event.stopPropagation();
+            isMoved = false;
+          }
+        });
+        window.addEventListener("resize", () => {
+          clientWidth = document.documentElement.clientWidth;
+          clientHeight = document.documentElement.clientHeight;
+          snapToEdge();
+        });
+      }
+
+      function openExternalUrl(url) {
+        if (window.innerWidth > 768) {
+          window.open(url, "_blank", "noopener,noreferrer");
+        } else {
+          window.location.href = url;
+        }
+      }
+
+      function openUrlWithBridge(url) {
+        if (typeof window.Jin10JSBridge !== "undefined") {
+          try {
+            const bridge = new window.Jin10JSBridge();
+            if (bridge.isApp) {
+              bridge.dispatch("openAppWebViewWithNav", { url });
+              return;
+            }
+          } catch (error) {
+            console.warn("bridge 打开链接失败，降级为外链打开", error);
+          }
+        }
+        openExternalUrl(url);
+      }
+    </script>
+    <style>
+      :root {
+        --paper: #f8f1e7;
+        --surface: #fffaf2;
+        --surface-soft: #f3ebdf;
+        --ink: #23140f;
+        --muted: #9b9184;
+        --gold: #b37a2a;
+        --line: rgba(48, 36, 24, 0.12);
+        --shadow: rgba(82, 58, 34, 0.16);
+        --font-display: "Source Han Serif CN", "Source Han Serif SC", "Noto Serif SC", "Songti SC", serif;
+        --font-ui: Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        --book-width: 82px;
+        --book-height: 114px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html,
+      body {
+        min-height: 100%;
+        overflow-x: hidden;
+        background: #fff;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: #fff;
+        font-family: var(--font-ui);
+      }
+
+      a,
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .page {
+        width: min(414px, 100%);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 32px 16px 118px;
+        background:
+          linear-gradient(180deg, rgba(255, 250, 242, 0.92), rgba(248, 241, 231, 0.9) 360px),
+          var(--paper);
+      }
+
+      .hero {
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        margin: -18px -16px 12px;
+        min-height: 214px;
+        padding: 32px 24px 24px;
+        border-bottom: 0;
+        background:
+          linear-gradient(180deg, rgba(255, 250, 242, 0.42) 0%, rgba(248, 241, 231, 0) 100%),
+          repeating-linear-gradient(90deg, rgba(35, 20, 15, 0.012) 0 1px, transparent 1px 46px),
+          repeating-linear-gradient(0deg, rgba(35, 20, 15, 0.01) 0 1px, transparent 1px 38px);
+        text-align: left;
+      }
+
+      .hero-copy,
+      .hero-brand,
+      .hero-logo,
+      .hero h1,
+      .hero p,
+      .hero-art {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-copy {
+        width: 254px;
+        transform: translateY(-2px);
+      }
+
+      .hero-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .hero-logo {
+        display: block;
+        width: 76px;
+        height: auto;
+        margin: 0;
+      }
+
+      .hero-badge {
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .hero h1 {
+        display: block;
+        margin: 14px 0 0;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: 40px;
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: 0;
+        text-indent: 0;
+      }
+
+      .hero p {
+        width: 254px;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.72;
+      }
+
+      .hero-art {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        width: 132px;
+        height: 132px;
+        pointer-events: none;
+        transform: translateY(-50%);
+      }
+
+      .hero-book {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 128px;
+        height: auto;
+        filter: drop-shadow(0 12px 18px rgba(179, 122, 42, 0.16));
+      }
+
+      .hero-pencil {
+        position: absolute;
+        right: 1px;
+        bottom: 50px;
+        width: 46px;
+        height: auto;
+        transform-origin: 28% 82%;
+        animation: pencilWriting 2.4s ease-in-out infinite;
+        filter: drop-shadow(0 8px 10px rgba(61, 92, 168, 0.18));
+      }
+
+      @keyframes pencilWriting {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        22% { transform: translate(-10px, 7px) rotate(-5deg); }
+        45% { transform: translate(-18px, 13px) rotate(-8deg); }
+        68% { transform: translate(-9px, 8px) rotate(-4deg); }
+      }
+
+      .recent-card {
+        display: grid;
+        grid-template-columns: 52px 1fr 14px;
+        gap: 12px;
+        align-items: center;
+        min-height: 92px;
+        margin: 0 0 30px;
+        padding: 12px 14px;
+        border-radius: 7px;
+        background: rgba(255, 250, 242, 0.9);
+        color: inherit;
+        text-decoration: none;
+        box-shadow: 0 10px 22px rgba(84, 61, 37, 0.08);
+      }
+
+      .recent-card[hidden] {
+        display: none;
+      }
+
+      .recent-cover {
+        display: block;
+        width: 52px;
+        height: 72px;
+        object-fit: cover;
+        border-radius: 0;
+        box-shadow: 4px 7px 12px rgba(52, 37, 24, 0.12);
+      }
+
+      .recent-label {
+        display: block;
+        margin: 0 0 4px;
+        color: var(--gold);
+        font-size: 13px;
+        font-weight: 850;
+        line-height: 1.2;
+      }
+
+      .recent-title {
+        display: block;
+        margin: 0 0 5px;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: 17px;
+        font-weight: 900;
+        line-height: 1.24;
+      }
+
+      .recent-meta {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .recent-arrow {
+        color: var(--gold);
+        font-size: 24px;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin: 0 0 14px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: 26px;
+        font-weight: 900;
+        line-height: 1.2;
+        letter-spacing: 2px;
+      }
+
+      .section-head span {
+        color: var(--gold);
+        font-size: 14px;
+        font-weight: 850;
+      }
+
+      .shelf {
+        margin: 0 -16px 38px;
+        padding: 0;
+      }
+
+      .shelf .section-head {
+        padding: 0 16px;
+      }
+
+      .shelf-stage {
+        position: relative;
+        overflow: visible;
+        min-height: 154px;
+        padding: 16px 10px 30px;
+        background: transparent;
+      }
+
+      .shelf-stage::before {
+        position: absolute;
+        right: 0;
+        bottom: 18px;
+        left: 0;
+        z-index: 1;
+        height: 12px;
+        content: "";
+        background: linear-gradient(180deg, #fffef8 0%, #e7dac7 100%);
+        box-shadow: 0 8px 10px rgba(67, 45, 24, 0.14);
+      }
+
+      .shelf-stage::after {
+        position: absolute;
+        right: 10px;
+        bottom: -6px;
+        left: 10px;
+        z-index: 0;
+        height: 24px;
+        content: "";
+        background: linear-gradient(180deg, rgba(234, 221, 201, 0.92), rgba(255, 250, 242, 0.78));
+        clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
+        box-shadow: 0 18px 22px rgba(81, 57, 33, 0.12);
+      }
+
+      .shelf-track {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: flex-end;
+        gap: 18px;
+        overflow-x: auto;
+        min-height: 114px;
+        padding: 0 2px;
+        scrollbar-width: none;
+      }
+
+      .shelf-track::-webkit-scrollbar {
+        display: none;
+      }
+
+      .book-button {
+        position: relative;
+        flex: 0 0 var(--book-width);
+        width: var(--book-width);
+        height: var(--book-height);
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        transform: none;
+        transform-origin: bottom center;
+        transition: transform 0.2s ease;
+      }
+
+      .book-button:hover,
+      .book-button:focus-visible {
+        transform: translateY(-3px);
+      }
+
+      .book-button.is-recent {
+        animation: recentBookHop 1.3s ease-in-out 0.2s 2;
+      }
+
+      .book-button::before {
+        position: absolute;
+        top: 0;
+        right: -7px;
+        width: 7px;
+        height: 100%;
+        content: "";
+        background: linear-gradient(90deg, rgba(43, 31, 21, 0.2), rgba(255, 255, 255, 0.5));
+        transform: skewY(36deg);
+        transform-origin: left top;
+      }
+
+      .book-button img {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+        box-shadow: 7px 0 10px rgba(60, 43, 28, 0.1);
+      }
+
+      @keyframes recentBookHop {
+        0%, 100% { transform: translateY(0); }
+        42% { transform: translateY(-7px); }
+        68% { transform: translateY(-2px); }
+      }
+
+      .chapters {
+        display: grid;
+        gap: 0;
+      }
+
+      .chapter {
+        min-width: 0;
+        padding: 22px 0 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .chapter:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .chapter-toggle {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 64px 1fr auto;
+        gap: 16px;
+        align-items: start;
+        padding: 0 0 22px;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        text-align: left;
+      }
+
+      .chapter-cover {
+        width: 64px;
+        height: 88px;
+        object-fit: cover;
+        border-radius: 0;
+        box-shadow: 5px 8px 14px rgba(52, 37, 24, 0.12);
+      }
+
+      .chapter-kicker {
+        display: block;
+        margin: 0 0 8px;
+        color: var(--gold);
+        font-size: 13px;
+        font-weight: 850;
+        line-height: 1.2;
+      }
+
+      .chapter-number {
+        font-family: var(--font-display);
+        font-weight: 900;
+      }
+
+      .chapter-title {
+        display: block;
+        margin: 0 0 10px;
+        color: #202730;
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 1.2;
+        letter-spacing: 1px;
+      }
+
+      .chapter-desc {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.62;
+      }
+
+      .chapter-state {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 400;
+      }
+
+      .chapter-state::after {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        content: "";
+        border-right: 1px solid currentColor;
+        border-bottom: 1px solid currentColor;
+        transform: translateY(-2px) rotate(45deg);
+      }
+
+      .chapter.is-open .chapter-state::after {
+        transform: translateY(2px) rotate(225deg);
+      }
+
+      .lesson-list {
+        display: none;
+        min-width: 0;
+        margin: 0;
+        padding: 0 0 0 18px;
+        list-style: none;
+      }
+
+      .chapter.is-open .lesson-list {
+        display: block;
+      }
+
+      .lesson-tabs {
+        display: none;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        margin: -2px 0 12px;
+      }
+
+      .chapter.is-open .lesson-tabs {
+        display: block;
+      }
+
+      .lesson-tab-list {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 10px;
+        padding: 0 0 4px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .lesson-tab-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      .lesson-tab {
+        flex: 0 0 auto;
+        min-width: 64px;
+        min-height: 34px;
+        padding: 0 13px;
+        border: 1px solid rgba(179, 122, 42, 0.2);
+        border-radius: 999px;
+        background: rgba(255, 250, 242, 0.7);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .lesson-tab.is-active {
+        border-color: rgba(179, 122, 42, 0.72);
+        background: var(--gold);
+        color: #fffaf2;
+        box-shadow: 0 8px 16px rgba(179, 122, 42, 0.18);
+      }
+
+      .lesson-tab-panel {
+        display: none;
+      }
+
+      .chapter.is-open .lesson-tab-panel {
+        display: none;
+      }
+
+      .lesson-tab-panel.is-active {
+        display: block;
+      }
+
+      .chapter.is-open .lesson-tab-panel.is-active {
+        display: block;
+      }
+
+      .lesson-link {
+        display: grid;
+        grid-template-columns: 38px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        min-width: 0;
+        min-height: 64px;
+        border-bottom: 1px solid var(--line);
+        color: #111820;
+        text-decoration: none;
+      }
+
+      .lesson-list li:last-child .lesson-link {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .chapter.is-open + .chapter {
+        border-top: 0;
+      }
+
+      .lesson-link em {
+        color: var(--muted);
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 900;
+      }
+
+      .lesson-link span {
+        min-width: 0;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.42;
+      }
+
+      .lesson-link b {
+        color: var(--gold);
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .notes {
+        margin: 18px 0 0;
+      }
+
+      .notes p {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.75;
+      }
+
+      .notes strong {
+        color: var(--ink);
+        font-weight: 850;
+      }
+
+      .bottom-action {
+        position: fixed;
+        z-index: 10;
+        bottom: 0;
+        left: 50%;
+        width: min(414px, 100%);
+        transform: translateX(-50%);
+        padding: 12px 16px 20px;
+        background: rgba(248, 241, 231, 0.94);
+        backdrop-filter: blur(18px);
+      }
+
+      .bottom-action-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.78fr;
+        gap: 10px;
+      }
+
+      .cta,
+      .quiet-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 48px;
+        border: 0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 850;
+        line-height: 1;
+      }
+
+      .cta {
+        padding: 0 14px;
+        background: var(--ink);
+        color: var(--surface);
+        text-align: center;
+        text-decoration: none;
+      }
+
+      .quiet-button {
+        width: 100%;
+        background: var(--surface);
+        color: var(--ink);
+        box-shadow: 0 10px 20px rgba(91, 63, 36, 0.08);
+      }
+
+      .action-icon {
+        width: 15px;
+        height: 15px;
+        flex: 0 0 auto;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+      }
+
+      @media (max-width: 374px) {
+        .hero h1 {
+          font-size: 38px;
+        }
+
+        .lesson-link span {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <div class="hero-brand">
+            <img class="hero-logo" src="./img/qihuo_school/logo.svg" alt="金十期货" />
+            <span class="hero-badge">独家栏目</span>
+          </div>
+          <h1 id="page-title">期货学堂</h1>
+          <p>从预期、兑现、结构和资金行为出发<br />把期货学习变成一套清晰的盘面阅读顺序</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <img class="hero-book" src="covers/头图书本.png" alt="" />
+          <img class="hero-pencil" src="covers/头图铅笔.png" alt="" />
+        </div>
+      </section>
+
+      <a class="recent-card" id="recent-card" href="qihuo_lesson_detail.html?id=01" aria-label="最近阅读" hidden>
+        <img class="recent-cover" id="recent-cover" src="covers/通用方法.png" alt="" />
+        <span>
+          <span class="recent-label">最近阅读</span>
+          <strong class="recent-title" id="recent-title">利多落地为何不涨：读懂预期兑现型行情</strong>
+          <span class="recent-meta" id="recent-meta">通用方法 / 6 节课程</span>
+        </span>
+        <span class="recent-arrow">›</span>
+      </a>
+
+      <section class="shelf" aria-labelledby="shelf-title">
+        <div class="section-head">
+          <h2 id="shelf-title">课程书架</h2>
+          <span>8 个模块</span>
+        </div>
+        <div class="shelf-stage">
+          <div class="shelf-track" id="shelf-track" aria-label="课程模块">
+            <button class="book-button" type="button" data-target="module-1" aria-label="通用方法"><img src="covers/通用方法.png" alt="" /></button>
+            <button class="book-button " type="button" data-target="module-2" aria-label="品种框架"><img src="covers/品种框架.png" alt="" /></button>
+            <button class="book-button " type="button" data-target="module-3" aria-label="盯盘神器教程"><img src="covers/盯盘神器教程.png" alt="" /></button>
+            <button class="book-button " type="button" data-target="module-4" aria-label="复盘训练"><img src="covers/复盘训练.png" alt="" /></button>
+            <button class="book-button " type="button" data-target="module-5" aria-label="宏观传导"><img src="covers/宏观传导.png" alt="" /></button>
+            <button class="book-button " type="button" data-target="module-6" aria-label="产业链联动"><img src="covers/产业链联动.png" alt="" /></button>
+            <button class="book-button " type="button" data-target="module-7" aria-label="结构与交割"><img src="covers/结构与交割.png" alt="" /></button>
+            <button class="book-button " type="button" data-target="module-8" aria-label="资金与持仓"><img src="covers/资金与持仓.png" alt="" /></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapters" id="chapters" aria-label="章节目录">
+        <article class="chapter is-open" id="module-1">
+          <button class="chapter-toggle" type="button" aria-expanded="true">
+            <img class="chapter-cover" src="covers/通用方法.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">01</span></span>
+              <span class="chapter-title">通用方法</span>
+              <span class="chapter-desc">围绕预期、兑现、情绪、结构与盘面验证展开，解决交易者最常见的误读场景。</span>
+            </span>
+            <span class="chapter-state">收起</span>
+          </button>
+          <ol class="lesson-list">
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=01"><em>01</em><span>利多落地为何不涨：读懂预期兑现型行情</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=02"><em>02</em><span>为什么库存下降，价格却未必上涨</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=03"><em>03</em><span>盘面大涨时，先看什么才不容易追高</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=04"><em>04</em><span>事件驱动行情怎么分辨“预期交易”还是“现实交易”</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=05"><em>05</em><span>为什么同样是利空，不同品种反应差这么大</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=06"><em>06</em><span>盘面看起来很强，不一定逻辑很强</span><b>›</b></a></li>
+          </ol>
+        </article>
+        <article class="chapter " id="module-2">
+          <button class="chapter-toggle" type="button" aria-expanded="false">
+            <img class="chapter-cover" src="covers/品种框架.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">02</span></span>
+              <span class="chapter-title">品种框架</span>
+              <span class="chapter-desc">把黑色、油脂油料、有色和能化放回产业链里，强调变量传导顺序而不是单点结论。</span>
+            </span>
+            <span class="chapter-state">展开</span>
+          </button>
+          <ol class="lesson-list">
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=07"><em>01</em><span>白银为什么比黄金更“躁动”</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=08"><em>02</em><span>白银研究框架：金银比之外，还该看什么</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=09"><em>03</em><span>豆粕研究框架：从压榨到出口</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=10"><em>04</em><span>棕榈油交易，为什么必须盯报告窗口</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=11"><em>05</em><span>铜的行情到底更看宏观，还是更看基本面</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=12"><em>06</em><span>原油为何经常先交易预期，再交易兑现</span><b>›</b></a></li>
+          </ol>
+        </article>
+        <article class="chapter " id="module-3">
+          <button class="chapter-toggle" type="button" aria-expanded="false">
+            <img class="chapter-cover" src="covers/盯盘神器教程.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">03</span></span>
+              <span class="chapter-title">盯盘神器教程</span>
+              <span class="chapter-desc">订单流、结构、量价与季节性都放回真实场景中使用，强调工具边界而非机械信号。</span>
+            </span>
+            <span class="chapter-state">展开</span>
+          </button>
+          <div class="lesson-tabs" data-tabs="tool-lessons">
+            <div class="lesson-tab-list" role="tablist" aria-label="盯盘神器教程分类">
+              <button class="lesson-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="tool-tab-orderflow" data-tab-target="tool-tab-orderflow">订单流</button>
+              <button class="lesson-tab" type="button" role="tab" aria-selected="false" aria-controls="tool-tab-capital" data-tab-target="tool-tab-capital">资金炸弹</button>
+              <button class="lesson-tab" type="button" role="tab" aria-selected="false" aria-controls="tool-tab-resonance" data-tab-target="tool-tab-resonance">指标共振</button>
+              <button class="lesson-tab" type="button" role="tab" aria-selected="false" aria-controls="tool-tab-volume" data-tab-target="tool-tab-volume">量价状态</button>
+              <button class="lesson-tab" type="button" role="tab" aria-selected="false" aria-controls="tool-tab-volume-profile" data-tab-target="tool-tab-volume-profile">量价分布</button>
+              <button class="lesson-tab" type="button" role="tab" aria-selected="false" aria-controls="tool-tab-harmonic" data-tab-target="tool-tab-harmonic">谐波形态</button>
+              <button class="lesson-tab" type="button" role="tab" aria-selected="false" aria-controls="tool-tab-moss" data-tab-target="tool-tab-moss">MOSS带</button>
+              <button class="lesson-tab" type="button" role="tab" aria-selected="false" aria-controls="tool-tab-other" data-tab-target="tool-tab-other">其他工具</button>
+            </div>
+            <ol class="lesson-list lesson-tab-panel is-active" id="tool-tab-orderflow" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=49"><em>01</em><span>订单流入门：一根K线内部到底发生了什么？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=53"><em>02</em><span>订单流怎么看：成交密集区、主动买卖和Delta怎么理解？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=54"><em>03</em><span>订单流怎么用：拉升、下跌、震荡场景如何观察？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=60"><em>04</em><span>订单流进阶：失衡和堆积带怎么看？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=61"><em>05</em><span>订单流进阶：累积Delta怎么看？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=13"><em>06</em><span>订单流里最容易被误读的三个信号</span><b>›</b></a></li>
+            </ol>
+            <ol class="lesson-list lesson-tab-panel" id="tool-tab-capital" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=50"><em>01</em><span>资金炸弹入门：盘中大额资金异动怎么看？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=55"><em>02</em><span>资金炸弹怎么用：拉升、下跌、震荡和板块联动如何观察？</span><b>›</b></a></li>
+            </ol>
+            <ol class="lesson-list lesson-tab-panel" id="tool-tab-resonance" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=51"><em>01</em><span>指标共振入门：多个指标同步变化怎么看？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=56"><em>02</em><span>指标共振怎么用：拉升、下跌、震荡和联动场景如何观察？</span><b>›</b></a></li>
+            </ol>
+            <ol class="lesson-list lesson-tab-panel" id="tool-tab-volume" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=52"><em>01</em><span>量价状态入门：价格、成交量、持仓量和资金流向怎么看？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=57"><em>02</em><span>量价状态怎么用：上涨、下跌、震荡和时间线场景如何观察？</span><b>›</b></a></li>
+            </ol>
+            <ol class="lesson-list lesson-tab-panel" id="tool-tab-volume-profile" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=62"><em>01</em><span>量价分布入门：不同价位的成交集中在哪里？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=63"><em>02</em><span>量价分布怎么看：成交密集区、成交稀疏区和当前价格位置怎么理解？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=64"><em>03</em><span>量价分布怎么用：震荡、离开成交密集区和重新堆积如何观察？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=16"><em>04</em><span>量价分布能帮你看清什么，不能帮你看清什么</span><b>›</b></a></li>
+            </ol>
+            <ol class="lesson-list lesson-tab-panel" id="tool-tab-harmonic" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=58"><em>01</em><span>谐波形态入门：用价格比例观察行情结构</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=59"><em>02</em><span>谐波形态怎么用：形态完成区、D点区域和多功能验证如何观察？</span><b>›</b></a></li>
+            </ol>
+            <ol class="lesson-list lesson-tab-panel" id="tool-tab-moss" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=65"><em>01</em><span>MOSS带入门：如何观察价格波动区间？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=66"><em>02</em><span>MOSS带怎么看：金色旋风、紫色区间和箭头怎么理解？</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=67"><em>03</em><span>MOSS带怎么用：拉升、下跌、震荡和多功能验证如何观察？</span><b>›</b></a></li>
+            </ol>
+            <ol class="lesson-list lesson-tab-panel" id="tool-tab-other" role="tabpanel">
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=14"><em>01</em><span>资金异动出现后，第一步该联看什么</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=15"><em>02</em><span>期限结构什么时候最有参考价值</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=17"><em>03</em><span>强弱订单比该怎么看，才不会看成方向判断</span><b>›</b></a></li>
+              <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=18"><em>04</em><span>季节性分析，什么时候容易失效</span><b>›</b></a></li>
+            </ol>
+          </div>
+        </article>
+        <article class="chapter " id="module-4">
+          <button class="chapter-toggle" type="button" aria-expanded="false">
+            <img class="chapter-cover" src="covers/复盘训练.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">04</span></span>
+              <span class="chapter-title">复盘训练</span>
+              <span class="chapter-desc">通过真实案例和阶段拆解，把复盘从记结果升级为记驱动、验证和失效。</span>
+            </span>
+            <span class="chapter-state">展开</span>
+          </button>
+          <ol class="lesson-list">
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=19"><em>01</em><span>一次典型的库存利多失效案例复盘</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=20"><em>02</em><span>为什么你总在情绪最强时加仓</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=21"><em>03</em><span>一轮大行情，通常会经历哪几个阶段</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=22"><em>04</em><span>一次报告行情是如何从预热走向兑现的</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=23"><em>05</em><span>伪突破为什么总容易让人上头</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=24"><em>06</em><span>你的复盘为什么总是记流水账</span><b>›</b></a></li>
+          </ol>
+        </article>
+        <article class="chapter " id="module-5">
+          <button class="chapter-toggle" type="button" aria-expanded="false">
+            <img class="chapter-cover" src="covers/宏观传导.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">05</span></span>
+              <span class="chapter-title">宏观传导</span>
+              <span class="chapter-desc">从利率、美元、通胀和政策预期出发，解释宏观冲击如何分层传导到商品盘面。</span>
+            </span>
+            <span class="chapter-state">展开</span>
+          </button>
+          <ol class="lesson-list">
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=25"><em>01</em><span>美联储预期变化，通常先影响哪些商品</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=26"><em>02</em><span>美元走强时，商品为什么不一定全面承压</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=27"><em>03</em><span>国内政策预期，如何影响黑色链和工业品</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=28"><em>04</em><span>通胀预期升温时，哪些商品更容易先动</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=29"><em>05</em><span>地缘冲突来了，为什么油涨了，有些化工品却不一定跟</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=30"><em>06</em><span>宏观利空下，为什么某些强现实品种反而更抗跌</span><b>›</b></a></li>
+          </ol>
+        </article>
+        <article class="chapter " id="module-6">
+          <button class="chapter-toggle" type="button" aria-expanded="false">
+            <img class="chapter-cover" src="covers/产业链联动.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">06</span></span>
+              <span class="chapter-title">产业链联动</span>
+              <span class="chapter-desc">聚焦上下游、替代品与利润分配，理解链条内部为何同向、背离或错位。</span>
+            </span>
+            <span class="chapter-state">展开</span>
+          </button>
+          <ol class="lesson-list">
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=31"><em>01</em><span>黑色链里，成材和原料为什么经常不同步</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=32"><em>02</em><span>豆系为什么经常出现油强粕弱，或粕强油弱</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=33"><em>03</em><span>原油涨了，化工品为何有时跟不上</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=34"><em>04</em><span>铜和铝为什么有时同向，有时背离</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=35"><em>05</em><span>生猪和豆粕，为什么常常不能简单同向理解</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=36"><em>06</em><span>焦煤与焦炭，为什么有时一起涨，有时只涨一个</span><b>›</b></a></li>
+          </ol>
+        </article>
+        <article class="chapter " id="module-7">
+          <button class="chapter-toggle" type="button" aria-expanded="false">
+            <img class="chapter-cover" src="covers/结构与交割.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">07</span></span>
+              <span class="chapter-title">结构与交割</span>
+              <span class="chapter-desc">围绕基差、仓单、月差和交割阶段，讲清结构定价到底在表达什么。</span>
+            </span>
+            <span class="chapter-state">展开</span>
+          </button>
+          <ol class="lesson-list">
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=37"><em>01</em><span>基差走强，盘面为什么不一定立刻上涨</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=38"><em>02</em><span>仓单变化，到底意味着什么</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=39"><em>03</em><span>月差异常扩大时，市场通常在担心什么</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=40"><em>04</em><span>交割月临近，哪些信号更值得盯</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=41"><em>05</em><span>近月强、远月弱，这种结构说明了什么</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=42"><em>06</em><span>盘面和现货背离时，市场到底在抢跑什么</span><b>›</b></a></li>
+          </ol>
+        </article>
+        <article class="chapter " id="module-8">
+          <button class="chapter-toggle" type="button" aria-expanded="false">
+            <img class="chapter-cover" src="covers/资金与持仓.png" alt="" />
+            <span>
+              <span class="chapter-kicker">课程 <span class="chapter-number">08</span></span>
+              <span class="chapter-title">资金与持仓</span>
+              <span class="chapter-desc">从增减仓、量价组合和拥挤交易入手，识别资金行为如何改变盘面节奏。</span>
+            </span>
+            <span class="chapter-state">展开</span>
+          </button>
+          <ol class="lesson-list">
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=43"><em>01</em><span>持仓增加但价格不涨，这种盘面该怎么理解</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=44"><em>02</em><span>缩量上涨和放量上涨，哪个更值得警惕</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=45"><em>03</em><span>盘中快速拉升后回落，通常暴露了什么问题</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=46"><em>04</em><span>持仓大减后的上涨，是真强还是空头回补</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=47"><em>05</em><span>价格没怎么动，持仓却大幅变化，说明什么</span><b>›</b></a></li>
+            <li><a class="lesson-link" href="qihuo_lesson_detail.html?id=48"><em>06</em><span>市场拥挤时，为什么越一致越危险</span><b>›</b></a></li>
+          </ol>
+        </article>
+      </section>
+
+      <section class="notes" aria-label="说明">
+        <p><strong>资料来源：</strong>课程内容由人工智能技术综合整理自交易所、官方机构、行业协会及主流大宗商品研究资料，仅供学习参考。</p>
+        <p><strong>免责声明：</strong>课程内容、案例拆解、图表与资料链接不构成任何投资建议、交易建议或收益承诺。期货及衍生品交易存在较高风险。</p>
+      </section>
+    </main>
+
+    <footer class="bottom-action" aria-label="底部操作">
+      <div class="bottom-action-grid">
+        <a class="cta" href="https://qihuo.jin10.com/app/index.html" onclick="event.preventDefault(); openUrlWithBridge(this.href);">
+          <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v12" />
+            <path d="m7 10 5 5 5-5" />
+            <path d="M5 21h14" />
+          </svg>
+          <span>下载金十期货APP</span>
+        </a>
+        <button class="quiet-button" type="button" data-action="share">
+          <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="m8.6 13.5 6.8 4" />
+            <path d="m15.4 6.5-6.8 4" />
+          </svg>
+          <span>分享</span>
+        </button>
+      </div>
+    </footer>
+
+    <script src="qihuo_school_data.js"></script>
+    <script>
+      const courseData = window.QIHUO_SCHOOL_CONTENT || { categories: [], lessons: [], sourceMap: {} };
+      const shelfTrack = document.getElementById("shelf-track");
+      const chaptersRoot = document.getElementById("chapters");
+      const recentCard = document.getElementById("recent-card");
+      const recentCover = document.getElementById("recent-cover");
+      const recentTitle = document.getElementById("recent-title");
+      const recentMeta = document.getElementById("recent-meta");
+      const lessonsById = new Map(courseData.lessons.map((lesson) => [lesson.id, lesson]));
+      let chapters = [];
+
+      function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#39;",
+        })[char]);
+      }
+
+      function moduleId(id) {
+        return `module-${Number(id)}`;
+      }
+
+      function coverSrc(category) {
+        return `covers/${category.title}.png`;
+      }
+
+      function getLessonCategory(lessonId) {
+        return courseData.categories.find((category) => category.lessons.includes(lessonId)) || courseData.categories[0];
+      }
+
+      function getStoredModuleId() {
+        const stored = safeGet("qihuo:lastModule");
+        return courseData.categories.some((category) => moduleId(category.id) === stored) ? stored : "module-1";
+      }
+
+      function getRecentLesson() {
+        const storedLessonId = safeGet("qihuo:lastLesson");
+        return storedLessonId ? lessonsById.get(storedLessonId) || null : null;
+      }
+
+      function safeGet(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function safeSet(key, value) {
+        try {
+          localStorage.setItem(key, value);
+        } catch (error) {}
+      }
+
+      function setChapterOpen(chapter, isOpen) {
+        const button = chapter.querySelector(".chapter-toggle");
+        const state = chapter.querySelector(".chapter-state");
+        chapter.classList.toggle("is-open", isOpen);
+        if (button) button.setAttribute("aria-expanded", String(isOpen));
+        if (state) state.textContent = isOpen ? "收起" : "展开";
+      }
+
+      function openChapter(target) {
+        chapters.forEach((chapter) => setChapterOpen(chapter, chapter.id === target));
+      }
+
+      function markRecentBook(moduleIdValue) {
+        document.querySelectorAll(".book-button").forEach((book) => book.classList.toggle("is-recent", book.dataset.target === moduleIdValue));
+      }
+
+      function clearRecentReading() {
+        recentCard.hidden = true;
+        markRecentBook(null);
+      }
+
+      function updateRecentReading(lessonId) {
+        const lesson = lessonsById.get(lessonId);
+        if (!lesson) {
+          clearRecentReading();
+          return;
+        }
+        const category = getLessonCategory(lesson.id);
+        recentCard.href = `qihuo_lesson_detail.html?id=${encodeURIComponent(lesson.id)}`;
+        recentCover.src = coverSrc(category);
+        recentTitle.textContent = lesson.title;
+        recentMeta.textContent = `${category.title} / ${category.lessons.length} 节课程`;
+        recentCard.hidden = false;
+        markRecentBook(moduleId(category.id));
+      }
+
+      function saveRecentModule(moduleIdValue) {
+        safeSet("qihuo:lastModule", moduleIdValue);
+      }
+
+      function saveRecentLesson(lessonId) {
+        const category = getLessonCategory(lessonId);
+        if (!category) return;
+        safeSet("qihuo:lastLesson", lessonId);
+        safeSet("qihuo:lastModule", moduleId(category.id));
+        updateRecentReading(lessonId);
+      }
+
+      const recentLesson = getRecentLesson();
+      const initialCategory = recentLesson ? getLessonCategory(recentLesson.id) : null;
+      const initialModuleId = initialCategory ? moduleId(initialCategory.id) : getStoredModuleId();
+      chapters = Array.from(document.querySelectorAll(".chapter"));
+      openChapter(initialModuleId);
+      if (recentLesson) {
+        updateRecentReading(recentLesson.id);
+      } else {
+        clearRecentReading();
+      }
+
+      shelfTrack.addEventListener("click", (event) => {
+        const book = event.target.closest(".book-button");
+        if (!book) return;
+        openChapter(book.dataset.target);
+        saveRecentModule(book.dataset.target);
+        document.getElementById(book.dataset.target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      chaptersRoot.addEventListener("click", (event) => {
+        const tab = event.target.closest(".lesson-tab");
+        if (!tab) return;
+        const tabs = tab.closest(".lesson-tabs");
+        const targetId = tab.dataset.tabTarget;
+        if (!tabs || !targetId) return;
+
+        tabs.querySelectorAll(".lesson-tab").forEach((item) => {
+          const isActive = item === tab;
+          item.classList.toggle("is-active", isActive);
+          item.setAttribute("aria-selected", String(isActive));
+        });
+        tabs.querySelectorAll(".lesson-tab-panel").forEach((panel) => {
+          panel.classList.toggle("is-active", panel.id === targetId);
+        });
+      });
+
+      chaptersRoot.addEventListener("click", (event) => {
+        const lessonLink = event.target.closest(".lesson-link");
+        if (lessonLink) {
+          const lessonId = new URL(lessonLink.href, location.href).searchParams.get("id");
+          if (lessonId) saveRecentLesson(lessonId);
+          return;
+        }
+
+        const button = event.target.closest(".chapter-toggle");
+        if (!button) return;
+        const chapter = button.closest(".chapter");
+        if (!chapter) return;
+        if (chapter.classList.contains("is-open")) {
+          setChapterOpen(chapter, false);
+        } else {
+          openChapter(chapter.id);
+          saveRecentModule(chapter.id);
+        }
+      });
+
+      document.querySelector('[data-action="share"]').addEventListener("click", async () => {
+        const shareData = { title: "期货学堂", text: "金十期货学堂", url: location.href };
+        if (navigator.share) {
+          await navigator.share(shareData).catch(() => {});
+          return;
+        }
+        await navigator.clipboard?.writeText(location.href).catch(() => {});
+      });
+
+      initCnzzStat();
+      initTestEnvTag();
+    </script>
+  </body>
+</html>
