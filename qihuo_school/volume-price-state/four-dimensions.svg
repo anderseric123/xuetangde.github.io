@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">量价状态四维观察示意</title>
+  <desc id="desc">量价状态把价格、成交量、持仓量和资金流向放在同一框架中观察。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="1" stop-color="#efd8aa"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="44" y="52" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">量价状态：不要只看价格涨跌</text>
+  <text x="44" y="84" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">把价格、成交量、持仓量和资金流向放到同一个框架里看。</text>
+  <g transform="translate(72 124)" font-family="Arial, 'Noto Sans SC', sans-serif">
+    <rect width="576" height="164" rx="18" fill="#fffdf8"/>
+    <g font-size="18" font-weight="850">
+      <rect x="36" y="44" width="108" height="68" rx="14" fill="#f5e0ba"/>
+      <text x="68" y="84" fill="#2d2119">价格</text>
+      <rect x="170" y="44" width="108" height="68" rx="14" fill="#f5e0ba"/>
+      <text x="192" y="84" fill="#2d2119">成交量</text>
+      <rect x="304" y="44" width="108" height="68" rx="14" fill="#f5e0ba"/>
+      <text x="326" y="84" fill="#2d2119">持仓量</text>
+      <rect x="438" y="44" width="108" height="68" rx="14" fill="#f5e0ba"/>
+      <text x="460" y="84" fill="#2d2119">资金流</text>
+    </g>
+    <text x="50" y="138" fill="#7c6045" font-size="14" font-weight="800">价格是结果</text>
+    <text x="178" y="138" fill="#7c6045" font-size="14" font-weight="800">成交看活跃度</text>
+    <text x="312" y="138" fill="#7c6045" font-size="14" font-weight="800">持仓看留存</text>
+    <text x="452" y="138" fill="#7c6045" font-size="14" font-weight="800">资金看参与</text>
+  </g>
+  <text x="78" y="326" fill="#6b5847" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="14" font-weight="800">核心：这次价格变化，背后有没有成交配合、持仓变化和资金流向变化？</text>
+</svg>

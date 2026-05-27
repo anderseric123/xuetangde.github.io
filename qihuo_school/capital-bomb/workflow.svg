@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">资金炸弹完整观察流程示意</title>
+  <desc id="desc">资金炸弹出现后，依次看时间、价格背景、订单流、量价状态和指标共振。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="1" stop-color="#efd8aa"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="44" y="54" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">看到资金炸弹后，按五步继续看</text>
+  <text x="44" y="86" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">不要停在提醒本身，把它放进完整盘面观察链条里。</text>
+  <g transform="translate(46 132)" font-family="Arial, 'Noto Sans SC', sans-serif">
+    <g>
+      <rect width="112" height="88" rx="14" fill="#fffdf8"/>
+      <text x="22" y="34" fill="#b37a2a" font-size="17" font-weight="900">01</text>
+      <text x="22" y="62" fill="#2d2119" font-size="17" font-weight="850">看异动</text>
+    </g>
+    <path d="M122 44h34" stroke="#b37a2a" stroke-width="4" stroke-linecap="round"/><path d="M156 44l-10-7v14z" fill="#b37a2a"/>
+    <g transform="translate(166 0)">
+      <rect width="112" height="88" rx="14" fill="#fffdf8"/>
+      <text x="22" y="34" fill="#b37a2a" font-size="17" font-weight="900">02</text>
+      <text x="22" y="62" fill="#2d2119" font-size="17" font-weight="850">看价格</text>
+    </g>
+    <path d="M288 44h34" stroke="#b37a2a" stroke-width="4" stroke-linecap="round"/><path d="M322 44l-10-7v14z" fill="#b37a2a"/>
+    <g transform="translate(332 0)">
+      <rect width="112" height="88" rx="14" fill="#fffdf8"/>
+      <text x="22" y="34" fill="#b37a2a" font-size="17" font-weight="900">03</text>
+      <text x="22" y="62" fill="#2d2119" font-size="17" font-weight="850">看订单流</text>
+    </g>
+    <path d="M454 44h34" stroke="#b37a2a" stroke-width="4" stroke-linecap="round"/><path d="M488 44l-10-7v14z" fill="#b37a2a"/>
+    <g transform="translate(498 0)">
+      <rect width="112" height="88" rx="14" fill="#fffdf8"/>
+      <text x="22" y="34" fill="#b37a2a" font-size="17" font-weight="900">04</text>
+      <text x="22" y="62" fill="#2d2119" font-size="17" font-weight="850">看量价仓</text>
+    </g>
+    <g transform="translate(210 132)">
+      <rect width="230" height="58" rx="14" fill="#fffdf8"/>
+      <text x="24" y="36" fill="#2d2119" font-size="18" font-weight="850">05 指标共振与板块联动</text>
+    </g>
+    <path d="M554 100v54H452" stroke="#d8a856" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M452 154l12-8v16z" fill="#d8a856"/>
+  </g>
+  <text x="74" y="326" fill="#6b5847" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="14" font-weight="800">完整流程的目的，是判断这次异动是否被后续成交、持仓和结构验证。</text>
+</svg>

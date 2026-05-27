@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">资金炸弹量价仓组合示意</title>
+  <desc id="desc">资金炸弹出现后，需要继续观察价格、成交量和持仓量是否配合。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff8ea"/>
+      <stop offset="1" stop-color="#f0ddb7"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="42" y="52" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">出现资金炸弹后，不能只看价格</text>
+  <text x="42" y="84" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">同样是上涨或下跌，成交和持仓是否同步，会改变观察含义。</text>
+  <g transform="translate(52 120)" font-family="Arial, 'Noto Sans SC', sans-serif">
+    <rect width="616" height="174" rx="16" fill="#fffdf8"/>
+    <g font-size="14" font-weight="850">
+      <text x="28" y="36" fill="#7c6045">价格变化</text>
+      <text x="180" y="36" fill="#7c6045">成交/持仓</text>
+      <text x="386" y="36" fill="#7c6045">观察含义</text>
+      <text x="28" y="78" fill="#49382b">上涨</text>
+      <text x="180" y="78" fill="#49382b">成交放大，持仓增加</text>
+      <text x="386" y="78" fill="#b37a2a">新增资金参与</text>
+      <text x="28" y="116" fill="#49382b">上涨</text>
+      <text x="180" y="116" fill="#49382b">成交放大，持仓下降</text>
+      <text x="386" y="116" fill="#b37a2a">可能是减仓换手</text>
+      <text x="28" y="154" fill="#49382b">下跌</text>
+      <text x="180" y="154" fill="#49382b">成交放大，持仓增加</text>
+      <text x="386" y="154" fill="#b37a2a">市场分歧加大</text>
+    </g>
+    <path d="M24 52h568M24 92h568M24 130h568" stroke="#ead9bb" stroke-width="1"/>
+  </g>
+  <text x="72" y="326" fill="#6b5847" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="14" font-weight="800">资金炸弹提醒“这里有异动”，量价状态帮助判断异动之后价、量、仓是否配合。</text>
+</svg>

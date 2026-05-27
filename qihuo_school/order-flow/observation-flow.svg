@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">订单流观察流程示意</title>
+  <desc id="desc">资金炸弹发现异常，订单流拆解成交，量价状态验证价量仓，指标共振做多维观察。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="1" stop-color="#f0ddb7"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="44" y="54" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">订单流最好放进完整观察流程</text>
+  <text x="44" y="86" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">异常不是答案，后续验证才决定这条线索有没有解释力。</text>
+  <g font-family="Arial, 'Noto Sans SC', sans-serif">
+    <g transform="translate(52 138)">
+      <rect width="136" height="94" rx="14" fill="#fffdf8"/>
+      <text x="18" y="36" fill="#b37a2a" font-size="18" font-weight="900">01</text>
+      <text x="18" y="64" fill="#2d2119" font-size="18" font-weight="850">资金炸弹</text>
+      <text x="18" y="84" fill="#7c6045" font-size="12" font-weight="700">发现盘中异常</text>
+    </g>
+    <path d="M198 185h54" stroke="#b37a2a" stroke-width="4" stroke-linecap="round"/>
+    <path d="M252 185l-12-8v16z" fill="#b37a2a"/>
+    <g transform="translate(262 138)">
+      <rect width="136" height="94" rx="14" fill="#fffdf8"/>
+      <text x="18" y="36" fill="#b37a2a" font-size="18" font-weight="900">02</text>
+      <text x="18" y="64" fill="#2d2119" font-size="18" font-weight="850">订单流</text>
+      <text x="18" y="84" fill="#7c6045" font-size="12" font-weight="700">拆解成交过程</text>
+    </g>
+    <path d="M408 185h54" stroke="#b37a2a" stroke-width="4" stroke-linecap="round"/>
+    <path d="M462 185l-12-8v16z" fill="#b37a2a"/>
+    <g transform="translate(472 138)">
+      <rect width="136" height="94" rx="14" fill="#fffdf8"/>
+      <text x="18" y="36" fill="#b37a2a" font-size="18" font-weight="900">03</text>
+      <text x="18" y="64" fill="#2d2119" font-size="18" font-weight="850">量价状态</text>
+      <text x="18" y="84" fill="#7c6045" font-size="12" font-weight="700">验证价量仓</text>
+    </g>
+    <path d="M540 242v36H180v-32" stroke="#d8a856" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M180 246l-8 12h16z" fill="#d8a856"/>
+    <g transform="translate(230 268)">
+      <rect width="260" height="52" rx="14" fill="#fffdf8"/>
+      <text x="22" y="33" fill="#2d2119" font-size="18" font-weight="850">指标共振：多维状态参考</text>
+    </g>
+  </g>
+</svg>

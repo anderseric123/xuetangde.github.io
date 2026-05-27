@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">指标共振质量判断示意</title>
+  <desc id="desc">判断指标共振时，需要看数量、类型、方向、位置和持续性。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff8ea"/>
+      <stop offset="1" stop-color="#f0ddb7"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="44" y="52" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">共振数量越多，不等于方向越确定</text>
+  <text x="44" y="84" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">真正要看的是这些变化是否来自不同维度，并且能否相互印证。</text>
+  <g transform="translate(54 120)" font-family="Arial, 'Noto Sans SC', sans-serif">
+    <rect width="612" height="172" rx="16" fill="#fffdf8"/>
+    <g font-size="16" font-weight="850">
+      <text x="36" y="44" fill="#2d2119">数量</text>
+      <text x="150" y="44" fill="#7c6045">几个指标同步变化？</text>
+      <text x="36" y="76" fill="#2d2119">类型</text>
+      <text x="150" y="76" fill="#7c6045">是同类重复，还是多维度变化？</text>
+      <text x="36" y="108" fill="#2d2119">方向</text>
+      <text x="150" y="108" fill="#7c6045">指标之间是否相互印证？</text>
+      <text x="36" y="140" fill="#2d2119">位置</text>
+      <text x="150" y="140" fill="#7c6045">发生在启动、加速、末端还是震荡？</text>
+    </g>
+    <g transform="translate(490 36)">
+      <circle cx="42" cy="42" r="42" fill="#f4dfb8"/>
+      <path d="M24 44l14 14 26-34" fill="none" stroke="#b37a2a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="78" y="326" fill="#6b5847" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="14" font-weight="800">指标共振是筛选工具，不是交易信号；它提高发现变化的效率，不替代后续验证。</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">Delta与价格匹配示意</title>
+  <desc id="desc">对比价格上涨时Delta同步增强和价格上涨但Delta走弱两种不同结构。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff8ea"/>
+      <stop offset="1" stop-color="#efd8aa"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="42" y="52" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">Delta不是方向结论，而是匹配度线索</text>
+  <text x="42" y="84" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">看价格变化与主动成交力量是否同向，而不是只看正负值。</text>
+  <g transform="translate(46 118)">
+    <rect width="292" height="184" rx="16" fill="#fffdf8"/>
+    <text x="22" y="34" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="18" font-weight="800">结构较一致</text>
+    <polyline points="34,132 82,112 130,92 178,68 244,44" fill="none" stroke="#d98f56" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="34,150 82,136 130,112 178,88 244,58" fill="none" stroke="#b37a2a" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+    <text x="34" y="168" fill="#6b5847" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="13" font-weight="700">价格上行，Delta同步扩大</text>
+    <circle cx="244" cy="44" r="7" fill="#d98f56"/>
+  </g>
+  <g transform="translate(382 118)">
+    <rect width="292" height="184" rx="16" fill="#fffdf8"/>
+    <text x="22" y="34" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="18" font-weight="800">需要继续观察</text>
+    <polyline points="34,132 82,110 130,86 178,62 244,42" fill="none" stroke="#d98f56" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="34,70 82,84 130,102 178,122 244,144" fill="none" stroke="#6aa6c8" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8"/>
+    <text x="34" y="168" fill="#6b5847" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="13" font-weight="700">价格上行，但Delta没有配合</text>
+    <circle cx="244" cy="42" r="7" fill="#d98f56"/>
+  </g>
+  <g font-family="Arial, 'Noto Sans SC', sans-serif" font-size="13" font-weight="800">
+    <rect x="196" y="324" width="14" height="14" rx="3" fill="#d98f56"/>
+    <text x="216" y="336" fill="#6b5847">价格路径</text>
+    <rect x="326" y="324" width="14" height="14" rx="3" fill="#b37a2a"/>
+    <text x="346" y="336" fill="#6b5847">Delta增强</text>
+    <rect x="466" y="324" width="14" height="14" rx="3" fill="#6aa6c8"/>
+    <text x="486" y="336" fill="#6b5847">Delta走弱</text>
+  </g>
+</svg>

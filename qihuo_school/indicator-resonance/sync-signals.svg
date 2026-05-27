@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">指标共振多维同步示意</title>
+  <desc id="desc">价格、动量、成交、持仓、资金和订单流等多个维度同时变化。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="1" stop-color="#efd8aa"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="44" y="52" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">指标共振：不是一个指标亮了</text>
+  <text x="44" y="84" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">更有价值的是不同类型指标在同一阶段同步变化。</text>
+  <g transform="translate(74 120)" font-family="Arial, 'Noto Sans SC', sans-serif">
+    <rect width="572" height="172" rx="16" fill="#fffdf8"/>
+    <g font-size="15" font-weight="850">
+      <text x="36" y="46" fill="#49382b">趋势</text>
+      <rect x="112" y="31" width="132" height="18" rx="4" fill="#d98f56"/>
+      <text x="284" y="46" fill="#49382b">动量</text>
+      <rect x="360" y="31" width="118" height="18" rx="4" fill="#d8a856"/>
+      <text x="36" y="86" fill="#49382b">成交</text>
+      <rect x="112" y="71" width="168" height="18" rx="4" fill="#d98f56"/>
+      <text x="284" y="86" fill="#49382b">持仓</text>
+      <rect x="360" y="71" width="142" height="18" rx="4" fill="#6aa6c8"/>
+      <text x="36" y="126" fill="#49382b">资金炸弹</text>
+      <rect x="112" y="111" width="188" height="18" rx="4" fill="#b37a2a"/>
+      <text x="324" y="126" fill="#49382b">订单流</text>
+      <rect x="410" y="111" width="120" height="18" rx="4" fill="#d98f56"/>
+    </g>
+  </g>
+  <text x="76" y="326" fill="#6b5847" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="14" font-weight="800">单一指标是观察点，多指标共振是多个观察点同时提醒盘面状态可能在变化。</text>
+</svg>

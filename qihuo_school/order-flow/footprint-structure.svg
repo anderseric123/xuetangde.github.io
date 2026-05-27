@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">订单流成交分布示意</title>
+  <desc id="desc">一根K线被拆成不同价格档位上的主动买入、主动卖出和成交密集区。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="1" stop-color="#f1dfbd"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-20%" width="120%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#5b3f24" flood-opacity=".16"/>
+    </filter>
+  </defs>
+  <rect width="720" height="360" rx="22" fill="url(#bg)"/>
+  <text x="44" y="52" fill="#2d2119" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="26" font-weight="800">一根K线内部：成交发生在哪些价位？</text>
+  <text x="44" y="84" fill="#7c6045" font-family="Arial, 'Noto Sans SC', sans-serif" font-size="16">普通K线看结果，订单流把成交分布、主动买卖和密集区拆开观察。</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="116" width="592" height="188" rx="16" fill="#fffdf8"/>
+  </g>
+  <g font-family="Arial, 'Noto Sans SC', sans-serif" font-size="13" font-weight="700" fill="#7c6045">
+    <text x="92" y="145">价格</text>
+    <text x="192" y="145">主动卖出</text>
+    <text x="424" y="145">主动买入</text>
+    <text x="555" y="145">观察</text>
+  </g>
+  <g font-family="Arial, 'Noto Sans SC', sans-serif" font-size="14" font-weight="800">
+    <g transform="translate(92 168)">
+      <text y="0" fill="#49382b">5050</text>
+      <rect x="102" y="-14" width="70" height="18" rx="4" fill="#6aa6c8"/>
+      <rect x="326" y="-14" width="132" height="18" rx="4" fill="#d98f56"/>
+      <text x="470" y="0" fill="#b37a2a">买盘推进</text>
+    </g>
+    <g transform="translate(92 202)">
+      <text y="0" fill="#49382b">5040</text>
+      <rect x="102" y="-14" width="136" height="18" rx="4" fill="#6aa6c8"/>
+      <rect x="326" y="-14" width="148" height="18" rx="4" fill="#d98f56"/>
+      <text x="470" y="0" fill="#b37a2a">成交密集</text>
+    </g>
+    <g transform="translate(92 236)">
+      <text y="0" fill="#49382b">5030</text>
+      <rect x="102" y="-14" width="158" height="18" rx="4" fill="#6aa6c8"/>
+      <rect x="326" y="-14" width="118" height="18" rx="4" fill="#d98f56"/>
+      <text x="470" y="0" fill="#b37a2a">充分换手</text>
+    </g>
+    <g transform="translate(92 270)">
+      <text y="0" fill="#49382b">5020</text>
+      <rect x="102" y="-14" width="86" height="18" rx="4" fill="#6aa6c8"/>
+      <rect x="326" y="-14" width="72" height="18" rx="4" fill="#d98f56"/>
+      <text x="470" y="0" fill="#b37a2a">参与较少</text>
+    </g>
+  </g>
+  <g font-family="Arial, 'Noto Sans SC', sans-serif" font-size="13" font-weight="800">
+    <rect x="96" y="318" width="14" height="14" rx="3" fill="#6aa6c8"/>
+    <text x="116" y="330" fill="#6b5847">主动卖出成交</text>
+    <rect x="238" y="318" width="14" height="14" rx="3" fill="#d98f56"/>
+    <text x="258" y="330" fill="#6b5847">主动买入成交</text>
+  </g>
+</svg>
